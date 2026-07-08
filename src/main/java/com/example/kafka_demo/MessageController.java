@@ -1,20 +1,20 @@
-package com.example.kafka_demo;
+package com.example.kafka_demo; // <--- Skontroluj, či sedí s tvojím projektom
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController // <--- Dôležité: Hovorí Springu, že toto je REST API
 @RequiredArgsConstructor
 public class MessageController {
 
     private final KafkaProducer producer;
 
-    // Volanie cez: http://localhost:8080/api/v1/kafka/publish?msg=AhojKafka
-    @GetMapping("/api/v1/kafka/publish")
-    public String publish(@RequestParam("msg") String message) {
-        producer.sendMessage(message);
-        return "Správa bola úspešne odoslaná do Kafky!";
+    // Presná URL bude: http://localhost:8080/api/v1/kafka/user
+    @PostMapping("/api/v1/kafka/user")
+    public String publishUser(@RequestBody UserEvent event) {
+        producer.sendUserEvent(event);
+        return "User event bol úspešne odoslaný!";
     }
 }

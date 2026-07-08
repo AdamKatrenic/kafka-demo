@@ -1,4 +1,4 @@
-package com.example.kafka_demo;
+package com.example.kafka_demo; // skontroluj, či ti sedí názov tvojho balíčka
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    // Spring ho automaticky nakonfiguruje a injektne vďaka Lombok @RequiredArgsConstructor
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    // Kľúčové je, aby tu bol typ <String, UserEvent> namiesto starého <String, String>
+    private final KafkaTemplate<String, UserEvent> kafkaTemplate;
 
-    public void sendMessage(String message) {
-        log.info("Posielam spravu: {}", message);
-        kafkaTemplate.send("moj-topic", message);
+    // Názov metódy musí byť presne sendUserEvent, aby ju Controller videl
+    public void sendUserEvent(UserEvent event) {
+        log.info("Posielam JSON objekt: {}", event);
+        kafkaTemplate.send("user-topic", event);
     }
 }
